@@ -2,39 +2,42 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  spec:
-    serviceName: postgres
-    replicas: 1
-    selector:
-      matchLabels:
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
         app: postgres
-    template:
-      metadata:
-        labels:
-          app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: docker.io/library/postgres:18-alpine
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: goapi
+            - name: POSTGRES_USER
+              value: goapi
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-auth
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql
+  volumeClaimTemplates:
+    - metadata:
+        name: data
       spec:
-        containers:
-          - name: postgres
-            image: postgres:18-alpine
-            ports:
-              - name: postgres
-                containerPort: 5432
-            env:
-              - name: POSTGRES_DB
-                value: goapi
-              - name: POSTGRES_USER
-                value: goapi
-              - name: POSTGRES_PASSWORD
-                value: do-not-use-this-in-prod
-            volumeMounts:
-              - name: data
-                mountPath: /var/lib/postgresql
-    volumeClaimTemplates:
-      - metadata:
-          name: data
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

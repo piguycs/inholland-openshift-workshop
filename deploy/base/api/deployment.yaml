@@ -16,8 +16,13 @@ spec:
       - name: api
         image: ghcr.io/piguycs/inholland-openshift-workshop-api:latest
         env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: password
           - name: DATABASE_URL
-            value: postgresql://goapi:do-not-use-this-in-prod@postgres:5432/goapi?sslmode=disable
+            value: postgresql://goapi:$(POSTGRES_PASSWORD)@postgres:5432/goapi?sslmode=disable
         imagePullPolicy: Always
         ports:
           - name: http
