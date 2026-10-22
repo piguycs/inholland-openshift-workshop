@@ -11,8 +11,8 @@ spec:
     metadata:
       labels:
         app: go-api
-  spec:
-    containers:
+    spec:
+      containers:
       - name: api
         image: ghcr.io/piguycs/inholland-openshift-workshop-api:latest
         imagePullPolicy: Always
