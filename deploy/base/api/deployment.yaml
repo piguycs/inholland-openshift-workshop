@@ -22,7 +22,7 @@ spec:
                 name: postgres-auth
                 key: password
           - name: DATABASE_URL
-            value: postgresql://goapi:$(POSTGRES_PASSWORD)@postgres:5432/goapi?sslmode=disable
+            value: postgresql://goapi:do-not-use-this-in-prod@postgres:5432/goapi?sslmode=disable
         imagePullPolicy: Always
         ports:
           - name: http
