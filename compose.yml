@@ -1,0 +1,7 @@
+services:
+  postgres:
+    image: docker.io/library/postgres:18-alpine3.24
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
